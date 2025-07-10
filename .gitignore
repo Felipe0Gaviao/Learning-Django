@@ -1,0 +1,14 @@
+# Any generated cache folders
+*cache*/
+
+# Any Database file
+*db*
+
+# Python-generated files
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Enviroment variables file
+.env
