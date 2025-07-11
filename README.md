@@ -17,7 +17,7 @@ If this Happens, then this message is probably going to be a lot different than 
 #### documentation-version: 
 [5.2](https://docs.djangoproject.com/en/5.2/) 
 #### current-status: 
-[tutorial01](https://docs.djangoproject.com/en/5.2/intro/tutorial01/)
+[tutorial02](https://docs.djangoproject.com/en/5.2/intro/tutorial02/)
 
 #### Some differences of what i'm doing in contrast to the tutorial:
 - Added this project to a repo so that i can track my progress.

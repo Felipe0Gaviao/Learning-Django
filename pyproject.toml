@@ -9,9 +9,10 @@ dependencies = ["django>=5.2.4"]
 
 [dependency-groups]
 dev = [
- "basedpyright>=1.30.1",
- "django-stubs>=5.2.1",
- "python-dotenv>=1.1.1",
+    "basedpyright>=1.30.1",
+    "django-stubs>=5.2.1",
+    "django-types>=0.21.0",
+    "python-dotenv>=1.1.1",
 ]
 
 [project.scripts]
@@ -23,3 +24,5 @@ package = true
 [tool.basedpyright]
 reportUnusedCallResult = false
 reportUnusedParameter = false
+reportUnannotatedClassAttribute = false
+reportImplicitOverride = false
