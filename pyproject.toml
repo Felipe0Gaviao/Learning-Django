@@ -1,6 +1,6 @@
 [project]
 name = "djangotutorial"
-version = "0.1.0"
+version = "0.3.0"
 description = "learning django from the list"
 readme = "README.md"
 authors = [{ name = "Felipe", email = "batatasteve304@gmail.com" }]

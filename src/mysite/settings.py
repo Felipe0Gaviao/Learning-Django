@@ -45,7 +45,14 @@ ROOT_URLCONF = "mysite.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        # had to manually add this.
+        # I know that DjangoTemplates searches for "templates" by default.
+        # But i still think that "templates" should be in the DIRS by default.
+        # Just to help some poeple that use type checkers.
+        # My type checker was warning that TEMPLATES' type was partially unknown when i open this file.
+        # It's not like people should/are going to divert from the default unles necessary.
+        # So why have a hidden convention when the DjangoTemplates' default should be to look here in the first place?
+        "DIRS": ["templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
