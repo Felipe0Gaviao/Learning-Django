@@ -16,14 +16,14 @@ app_name = "polls"
 # Having the url patterns separated like this would be nice to deal with.
 
 urlpatterns = [
-    path("", views.index, name="index"),
+    path("", views.IndexView.as_view(), name="index"),
     # Adding the type of the question_id to the route, i'm not completly against that.
     # My problem with this is that problem is, again, it's using strings.
     # It would be cool if it could use the types from the view's function definition.
     # But it would probably break backwards compatibility.
     # Because the functions required for this to work are probably in the more recent versions of python.
     # So i can't see what would be a better way of doing this without breaking backwards compatibility
-    path("<int:question_id>/", views.detail, name="detail"),
-    path("<int:question_id>/results/", views.results, name="results"),
+    path("<int:pk>/", views.DetailView.as_view(), name="detail"),
+    path("<int:pk>/results/", views.ResultView.as_view(), name="results"),
     path("<int:question_id>/vote/", views.vote, name="vote"),
 ]

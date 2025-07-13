@@ -11,6 +11,7 @@ def main():
     #! This is not from the Tutorial
     # The main() function runs when the manage script runs
     # so this ensures that SECRET_KEY in mysite/settings.py is loaded
+    # i'm not sure if there's any better file path to add this line.
     load_dotenv()
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
     try:

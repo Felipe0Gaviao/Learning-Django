@@ -1,32 +1,58 @@
-from django.http import HttpResponse, HttpRequest
+from django.db.models import F
+from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from .models import Question
+from django.urls import reverse
+from django.views import generic
 
-# Added HttpRequest with the tutortial's HttpResponse so that i can type check this.
-# I do like that it's very easy to just return a Response like that.
-
-
-def index(request: HttpRequest):
-    latest_question_list = Question.objects.order_by("-pub_date")[:5]
-    context = {"latest_question_list": latest_question_list}
-    return render(request, "polls/index.html", context)
+from .models import Choice, Question
 
 
-# Changing this part to use f-strings instead of %s.
-# They are still using it in the tutorial, as of the day that this was commited
-# I'm assuming that's for better backwards compatibility.
-# I'm using python 3.12, so i can and will use the more modern way of string concatenation
-def detail(request: HttpRequest, question_id: int):
-    # Why is the parameter for this function call called "klass" instead of "class"?
-    # Something that i need to look into after finishing the tutortial if it's not informed during it.
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, "polls/detail.html", {"question": question})
+class IndexView(generic.ListView):
+    template_name = "polls/index.html"
+    context_object_name = "latest_question_list"
+
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return Question.objects.order_by("-pub_date")[:5]
 
 
-def results(request: HttpRequest, question_id: int):
-    response = f"You're looking at the results of question {question_id}"
-    return HttpResponse(response)
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = "polls/detail.html"
+
+
+class ResultView(generic.DetailView):
+    model = Question
+    template_name = "polls/result.html"
 
 
 def vote(request: HttpRequest, question_id: int):
-    return HttpResponse(f"You're voting on question {question_id}")
+    question = get_object_or_404(Question, pk=question_id)
+    try:
+        # I was trying to understando from where django is getting choice_set, because my type checker cannot find it
+        # After a quick search, i found this:
+        # https://stackoverflow.com/questions/2048777/what-is-choice-set-in-this-django-app-tutorial
+        # aparently django creates this "choice_set" the moment a ForeignKey was created inside the Choice Model
+        # So every time a Foreing key is created pointing to a specific class:
+        #    a new <classname>_set method is created in the class that the ForeignKey is pointing to.
+        # I really don't like this, to be dynamically creating methods at run-time.
+        # I'm not sure if it's by design, but i'm assuming that from now on i will just have to disable my type checker.
+        # There must be a better way, but for now i will go along with the tutorial without it.
+        selected_choice: Choice = question.choice_set.get(pk=request.POST["choice"])
+    except (KeyError, Choice.DoesNotExist):
+        # Redisplay the question voting form.
+        return render(
+            request,
+            "polls/detail.html",
+            {
+                "question": question,
+                "error_message": "You didn't select a choice.",
+            },
+        )
+    else:
+        selected_choice.votes = F("votes") + 1
+        selected_choice.save()
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data. This prevents data from being posted twice if a
+        # user hits the Back button.
+        return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
