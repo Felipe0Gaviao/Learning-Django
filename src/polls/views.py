@@ -3,6 +3,7 @@ from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
+from django.utils import timezone
 
 from .models import Choice, Question
 
@@ -12,13 +13,22 @@ class IndexView(generic.ListView):
     context_object_name = "latest_question_list"
 
     def get_queryset(self):
-        """Return the last five published questions."""
-        return Question.objects.order_by("-pub_date")[:5]
+        """Return the last five published questions (not including those set to be published in the future)."""
+
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by(
+            "-pub_date"
+        )[:5]
 
 
 class DetailView(generic.DetailView):
     model = Question
     template_name = "polls/detail.html"
+
+    def get_queryset(self):
+        """
+        Excludes any questions that aren't published yet.
+        """
+        return Question.objects.filter(pub_date__lte=timezone.now())
 
 
 class ResultView(generic.DetailView):
@@ -35,10 +45,11 @@ def vote(request: HttpRequest, question_id: int):
         # aparently django creates this "choice_set" the moment a ForeignKey was created inside the Choice Model
         # So every time a Foreing key is created pointing to a specific class:
         #    a new <classname>_set method is created in the class that the ForeignKey is pointing to.
-        # I really don't like this, to be dynamically creating methods at run-time.
-        # I'm not sure if it's by design, but i'm assuming that from now on i will just have to disable my type checker.
-        # There must be a better way, but for now i will go along with the tutorial without it.
-        selected_choice: Choice = question.choice_set.get(pk=request.POST["choice"])
+        # I really don't like this.
+        # type checker complaining.
+        # found a way to solve it in: ./models.py#L21
+        # still don't like it.
+        selected_choice = question.choice_set.get(pk=request.POST["choice"])
     except (KeyError, Choice.DoesNotExist):
         # Redisplay the question voting form.
         return render(

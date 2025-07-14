@@ -1,6 +1,6 @@
 [project]
 name = "djangotutorial"
-version = "0.4.0"
+version = "0.5.0"
 description = "learning django from the list"
 readme = "README.md"
 authors = [{ name = "Felipe", email = "batatasteve304@gmail.com" }]
@@ -9,7 +9,9 @@ dependencies = ["django>=5.2.4"]
 
 [dependency-groups]
 dev = [
- "python-dotenv>=1.1.1",
+    # just for type checking
+    "django-types>=0.21.0",
+    "python-dotenv>=1.1.1",
 ]
 
 [project.scripts]
@@ -17,3 +19,11 @@ manage = "manage:main"
 
 [tool.uv]
 package = true
+
+# Just for type checking
+[tool.basedpyright]
+reportUnannotatedClassAttribute = false
+reportImplicitOverride = false
+reportUninitializedInstanceVariable = false
+reportAny = false
+reportUnusedCallResult = false
