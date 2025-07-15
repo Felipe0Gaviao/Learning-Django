@@ -1,3 +1,14 @@
+<!-- 
+I'm not sure i like this.
+Is it that hard to just go with the normal stylesheet href tag?
+I'm sure this can't be the only reason to use this over the alternative that's already present on plain html.
+Everything is already encapsulated inside an "app" so wouldn't somehting like:
+<link rel="stylesheet" href="../../static/polls/style.css" /> already work?
+Like, it could even have less text if i removed the whole namespacing thing.
+So that they could be just one folder away from each other.
+-->
+{% load static %}
+<link rel="stylesheet" href="{% static 'polls/style.css' %}">
 {% if latest_question_list %}
 <ul>
     {% for question in latest_question_list %}
