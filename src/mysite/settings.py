@@ -52,7 +52,7 @@ TEMPLATES = [
         # My type checker was warning that TEMPLATES' type was partially unknown when i open this file.
         # It's not like people should/are going to divert from the default unles necessary.
         # So why have a hidden convention when the DjangoTemplates' default should be to look here in the first place?
-        "DIRS": ["templates"],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

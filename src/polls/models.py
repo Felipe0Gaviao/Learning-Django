@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
+from django.contrib import admin
 
 
 # Models are tables and class variables are columns in the table, i like it.
@@ -24,7 +25,12 @@ class Question(models.Model):
         return self.question_text
 
     # I like that i can just make methods like that, it's one of the upsides of having the database logic on the server.
-    # In the future, i'm assuming that i'm going to use this for something.
+
+    @admin.display(
+        boolean=True,
+        ordering="pub_date",
+        description="Published recently?",
+    )
     def was_published_recently(self):
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.pub_date <= now
