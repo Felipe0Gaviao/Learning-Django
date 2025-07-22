@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
+from debug_toolbar.toolbar import debug_toolbar_urls  # pyright: ignore[reportMissingTypeStubs]
 
 # From polls/urls.py.
 # This is really interesting, i like it here.
@@ -9,4 +10,7 @@ from django.urls import path, include
 
 # im not sure if could be possible with importlib, but maybe.
 
-urlpatterns = [path("polls/", include("polls.urls")), path("admin/", admin.site.urls)]
+urlpatterns = [
+    path("polls/", include("polls.urls")),
+    path("admin/", admin.site.urls),
+] + debug_toolbar_urls()

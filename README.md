@@ -26,7 +26,7 @@ If this Happens, then this message is probably going to be a lot different than 
 
 ## current-status
 
-### [tutorial06](https://docs.djangoproject.com/en/5.2/intro/tutorial06/)
+### [tutorial08](https://docs.djangoproject.com/en/5.2/intro/tutorial08/)
 
 ## Some differences of what i'm doing in contrast to the tutorial
 

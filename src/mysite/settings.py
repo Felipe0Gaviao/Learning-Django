@@ -28,9 +28,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -45,13 +47,7 @@ ROOT_URLCONF = "mysite.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        # had to manually add this.
-        # I know that DjangoTemplates searches for "templates" by default.
-        # But i still think that "templates" should be in the DIRS by default.
-        # Just to help some poeple that use type checkers.
-        # My type checker was warning that TEMPLATES' type was partially unknown when i open this file.
-        # It's not like people should/are going to divert from the default unles necessary.
-        # So why have a hidden convention when the DjangoTemplates' default should be to look here in the first place?
+        # was added during tutorial06->tutorial07
         "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -119,3 +115,10 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Internal IPs, retrieved from django_debug_toolbar documentation at:
+# https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#configure-internal-ips
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
